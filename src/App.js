@@ -11,7 +11,7 @@ function App() {
       element: <Body />,
     },
     {
-      path: "/login",
+      path: "/",
       element: <LoginSignUp />,
     }
   ]);
