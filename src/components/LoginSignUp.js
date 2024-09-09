@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react'
 import Header from './Header'
 import { checkValidData } from '../utils/validate';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
+import { auth } from '../utils/firebase';
 
 const LoginSignUp = () => {
 
@@ -17,7 +19,39 @@ const LoginSignUp = () => {
     // console.log(email.current.value);
     // console.log(password.current.value);
     setErrorMessage(message);
-  }
+
+    //if there is a message, then return the form from here only i dont want to go any further. - because if there is a message then there must be some error in the validation.
+    if(message) return;
+
+    //signin sign up logic
+    if(isSignUp) {
+      // sign up logic
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+      .then((userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode + " " + errorMessage);
+      });
+        } else {
+          // sign in logic
+          signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+          .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log(user)
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode + " " + errorMessage);
+          })
+        }
+  };
 
   return (
     <div className="relative h-screen">
