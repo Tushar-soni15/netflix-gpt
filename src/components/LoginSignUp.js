@@ -1,9 +1,23 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Header from './Header'
+import { checkValidData } from '../utils/validate';
 
 const LoginSignUp = () => {
 
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const email = useRef(null);
+  const password = useRef(null);
+
   const [isSignUp, setisSignUp] = useState(false);
+
+  const checkFormVlidation = () => {
+    const message =checkValidData(email.current.value, password.current.value);
+    console.log(message);
+    // console.log(email.current.value);
+    // console.log(password.current.value);
+    setErrorMessage(message);
+  }
 
   return (
     <div className="relative h-screen">
@@ -22,24 +36,28 @@ const LoginSignUp = () => {
           <h1 className="text-2xl font-bold mb-6 text-white text-left">{isSignUp? "Sign UP":"Sign In"}</h1>
           
           {isSignUp && <input
-            type="email"
+            type="text"
             placeholder="Enter Your Name"
             className="border bg-black bg-opacity-30 border-white mb-4 p-3 w-full rounded text-white"
           />}
 
           <input
-            type="email"
+            ref={email}
+            type="text"
             placeholder="Email"
             className="border bg-black bg-opacity-30 border-white mb-4 p-3 w-full rounded text-white"
           />
 
           <input
+            ref={password}
             type="password"
             placeholder="Password"
             className="border bg-black bg-opacity-50 border-white mb-6 p-3 w-full rounded text-white"
           />
-
-          <button className="bg-red-600 text-white py-2 px-6 rounded hover:bg-red-700 transition w-full">
+          <p className='text-red-500 mb-1 text-left text-sm'>{errorMessage}</p>
+          <button
+          onClick={checkFormVlidation} 
+          className="bg-red-600 text-white py-2 px-6 rounded hover:bg-red-700 transition w-full">
             {isSignUp? "Sign Up": "Sign In"}
           </button>
           <p 

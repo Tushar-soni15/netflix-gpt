@@ -4,7 +4,8 @@
  - install and configure tailwind css
  - setup routing.
  - create login page
- - 
+ - signu up form
+ - form validation using useRef hook
 
 # features of the app:
 
