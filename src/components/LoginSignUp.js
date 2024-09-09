@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from './Header'
 
 const LoginSignUp = () => {
+
+  const [isSignUp, setisSignUp] = useState(false);
+
   return (
     <div className="relative h-screen">
       <Header />
-      {/* Background image container */}
       <div className="absolute top-0 left-0 w-full h-full">
         <img
           alt="bg"
@@ -14,12 +16,20 @@ const LoginSignUp = () => {
         />
       </div>
       <div className="flex items-center justify-center h-full relative z-10">
-        <form className="bg-black bg-opacity-85 p-14 rounded-lg shadow-lg text-center w-96">
-          <h1 className="text-2xl font-bold mb-6 text-white text-left">Sign In</h1>
+        <form
+        onSubmit={(e)=>e.preventDefault()} 
+        className="bg-black bg-opacity-85 p-14 rounded-lg shadow-lg text-center w-96">
+          <h1 className="text-2xl font-bold mb-6 text-white text-left">{isSignUp? "Sign UP":"Sign In"}</h1>
+          
+          {isSignUp && <input
+            type="email"
+            placeholder="Enter Your Name"
+            className="border bg-black bg-opacity-30 border-white mb-4 p-3 w-full rounded text-white"
+          />}
 
           <input
             type="email"
-            placeholder="Email or Mobile number"
+            placeholder="Email"
             className="border bg-black bg-opacity-30 border-white mb-4 p-3 w-full rounded text-white"
           />
 
@@ -30,9 +40,12 @@ const LoginSignUp = () => {
           />
 
           <button className="bg-red-600 text-white py-2 px-6 rounded hover:bg-red-700 transition w-full">
-            Sign In
+            {isSignUp? "Sign Up": "Sign In"}
           </button>
-          <p className='m-1 p-1 text-white text-left'>New to NetflixGPT? <span className='text-white font-bold'>Sign up now.</span></p>
+          <p 
+          onClick={()=>setisSignUp(!isSignUp)}
+          className='cursor-pointer m-1 p-1 text-white text-left'>{isSignUp? "Already a user? Sign In now." : "New to NetflixGPT?"}
+          {!isSignUp && <span className='text-white font-bold'>Sign up now.</span>}</p>
           <p className='m-1 p-1 text-gray-400 text-left text-xs'>This page is protected by Google reCAPTCHA to ensure you're not a bot.</p>
         </form>
       </div>

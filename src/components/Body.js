@@ -3,7 +3,9 @@ import Header from './Header'
 
 const Body = () => {
   return (
-    <div><Header/></div>
+    <div>
+      <Header/>
+    </div>
   )
 }
 
