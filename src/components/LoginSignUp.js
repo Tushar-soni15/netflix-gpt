@@ -1,17 +1,38 @@
-import React, { useRef, useState } from 'react'
-import Header from './Header'
+import React, { useEffect, useRef, useState } from 'react'
 import { checkValidData } from '../utils/validate';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from '../utils/firebase';
+import { onAuthStateChanged } from "firebase/auth";
+import { addUser, removeUser } from '../utils/userSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const LoginSignUp = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSignUp, setisSignUp] = useState(false);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
-
-  const [isSignUp, setisSignUp] = useState(false);
+  // onAuthStateChanged is a utility by firbase, basically it ease down out code by calling this api everything the auth of a user changes - sign in, sign up or signout, it will get called therefore this is the best place to implement the dipatch action for our redux store and also to navigate.
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+      const {uid, email, displayName } = user;
+      dispatch(addUser({uid: uid, email: email, displayName: displayName}));
+      } else {
+        // User is signed out
+        // ...
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
+  }, []);
 
   const checkFormVlidation = () => {
     const message =checkValidData(email.current.value, password.current.value);
@@ -26,36 +47,64 @@ const LoginSignUp = () => {
     //signin sign up logic
     if(isSignUp) {
       // sign up logic
-      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+      createUserWithEmailAndPassword(
+        auth, 
+        email.current.value, 
+        password.current.value
+      )
       .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;
-        console.log(user);
+        // update the display name
+        updateProfile(user, {
+            displayName: name.current.value
+          })
+          .then(() => {
+            const {uid, email, displayName } = auth.currentUser;
+            dispatch(
+              addUser({
+                uid: uid, 
+                email: email, 
+                displayName: displayName}
+              ));
+            console.log(displayName);
+            navigate("/browse");
+          })
+          .catch((error) => {
+            setErrorMessage(error.message)
+        });
+        
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode + " " + errorMessage);
       });
-        } else {
-          // sign in logic
-          signInWithEmailAndPassword(auth, email.current.value, password.current.value)
-          .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            console.log(user)
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode + " " + errorMessage);
-          })
-        }
+      } else {
+        // sign in logic
+        signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          console.log(user)
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + " " + errorMessage);
+        })
+      }
   };
 
   return (
     <div className="relative h-screen">
-      <Header />
+      <div className='bg-gradient-to-b from-black justify-between'>
+        <img
+          alt="logo"
+          src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
+          className="h-24 absolute z-20 w-48-"
+        />
+      </div>
       <div className="absolute top-0 left-0 w-full h-full">
         <img
           alt="bg"
@@ -70,6 +119,7 @@ const LoginSignUp = () => {
           <h1 className="text-2xl font-bold mb-6 text-white text-left">{isSignUp? "Sign UP":"Sign In"}</h1>
           
           {isSignUp && <input
+          ref = {name}
             type="text"
             placeholder="Enter Your Name"
             className="border bg-black bg-opacity-30 border-white mb-4 p-3 w-full rounded text-white"
@@ -105,4 +155,4 @@ const LoginSignUp = () => {
   )
 }
 
-export default LoginSignUp
+export default LoginSignUp;
