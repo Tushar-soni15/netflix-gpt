@@ -86,7 +86,7 @@ const LoginSignUp = () => {
           className="object-cover w-full h-full"
         />
       </div>
-      <div className="flex items-center justify-center h-full relative z-10">
+      <div className="flex items-center justify-center h-full relative z-10 pb-52">
         <form
         onSubmit={(e)=>e.preventDefault()} 
         className="bg-black bg-opacity-85 p-14 rounded-lg shadow-lg text-center w-96">

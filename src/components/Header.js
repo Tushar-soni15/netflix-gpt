@@ -45,9 +45,9 @@ const Header = () => {
     })
   }
   return (
-    <div className="relative bg-gradient-to-b from-black flex justify-between items-center px-4 py-4">
+    <div className="absolute bg-gradient-to-b from-black flex justify-between items-center w-full">
       {/* Netflix Logo */}
-      <div className="flex items-center">
+      <div className="flex items-center mt-2">
         <img
           alt="logo"
           src={NETFLIX_LOGO}
@@ -56,7 +56,7 @@ const Header = () => {
       </div>
 
       {/* Sign-out button and user icon */}
-      {user && <div className="flex items-center space-x-4 px-6">
+      {user && <div className="flex items-center space-x-4 pt-6">
         <img
           className="h-10 w-10 z-20"
           alt="user"
