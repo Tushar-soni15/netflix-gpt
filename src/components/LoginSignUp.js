@@ -16,7 +16,6 @@ const LoginSignUp = () => {
   const password = useRef(null);
   // onAuthStateChanged is a utility by firbase, basically it ease down out code by calling this api everything the auth of a user changes - sign in, sign up or signout, it will get called therefore this is the best place to implement the dipatch action for our redux store and also to navigate.
   
-
   const checkFormVlidation = () => {
     const message =checkValidData(email.current.value, password.current.value);
     console.log(message);
@@ -128,6 +127,6 @@ const LoginSignUp = () => {
       </div>
     </div>
   )
-}
+};
 
 export default LoginSignUp;
