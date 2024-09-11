@@ -13,6 +13,8 @@
  - created Redux store to append the user data into the appStore of redux 
  - Implemented Sign out and its reducer 
  - Updated profile with Display name of user (fixed the bug)
+ - Implemented auth - if user is not logged in it cannot go to /browse page and vica versa.
+ - unsbscribe the the onAuthStateChange function which was called on every render of Header component, therefore we have to unmount that.
 
 
 # features of the app:

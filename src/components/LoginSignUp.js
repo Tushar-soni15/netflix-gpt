@@ -1,38 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { checkValidData } from '../utils/validate';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from '../utils/firebase';
-import { onAuthStateChanged } from "firebase/auth";
-import { addUser, removeUser } from '../utils/userSlice';
+import { addUser } from '../utils/userSlice';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 const LoginSignUp = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isSignUp, setisSignUp] = useState(false);
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
   // onAuthStateChanged is a utility by firbase, basically it ease down out code by calling this api everything the auth of a user changes - sign in, sign up or signout, it will get called therefore this is the best place to implement the dipatch action for our redux store and also to navigate.
-  useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
-      const {uid, email, displayName } = user;
-      dispatch(addUser({uid: uid, email: email, displayName: displayName}));
-      } else {
-        // User is signed out
-        // ...
-        dispatch(removeUser());
-        navigate("/");
-      }
-    });
-  }, []);
+  
 
   const checkFormVlidation = () => {
     const message =checkValidData(email.current.value, password.current.value);
@@ -67,8 +50,6 @@ const LoginSignUp = () => {
                 email: email, 
                 displayName: displayName}
               ));
-            console.log(displayName);
-            navigate("/browse");
           })
           .catch((error) => {
             setErrorMessage(error.message)
@@ -86,25 +67,19 @@ const LoginSignUp = () => {
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user;
-          console.log(user)
+          // console.log(user)
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(errorCode + " " + errorMessage);
+          // console.log(errorCode + " " + errorMessage);
         })
       }
   };
 
   return (
     <div className="relative h-screen">
-      <div className='bg-gradient-to-b from-black justify-between'>
-        <img
-          alt="logo"
-          src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
-          className="h-24 absolute z-20 w-48-"
-        />
-      </div>
+      <Header/>
       <div className="absolute top-0 left-0 w-full h-full">
         <img
           alt="bg"
