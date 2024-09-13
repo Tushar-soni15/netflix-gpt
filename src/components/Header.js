@@ -5,11 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
 import { NETFLIX_LOGO, PROFILE_LOGO } from '../utils/constants';
+import { toggleSearchBtn } from '../utils/gptSearchStore';
 
 const Header = () => {
 
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user)
+  const gptBtn = useSelector((store) => store.gpt.gptBtnState)
   const navigate = useNavigate();
 
   useEffect(()=>{
@@ -44,6 +46,11 @@ const Header = () => {
       navigate("/error")
     })
   }
+
+  const handleGptSearchClick = () => {
+    console.log("CLICKED")
+    dispatch(toggleSearchBtn());
+  }
   return (
     <div className="absolute bg-gradient-to-b from-black flex justify-between items-center w-full">
       {/* Netflix Logo */}
@@ -54,9 +61,13 @@ const Header = () => {
           className="h-24 z-20"
         />
       </div>
-
       {/* Sign-out button and user icon */}
-      {user && <div className="flex items-center space-x-4 pt-6">
+      {user && (
+        <div className="flex items-center space-x-4 pt-6">
+        <button 
+          className='bg-red-700 p-2 mr-2 text-white rounded-lg hover:bg-red-800 z-20'
+          onClick={handleGptSearchClick}>{gptBtn ? "Home Page" : "GPT Search"}
+        </button>
         <img
           className="h-10 w-10 z-20"
           alt="user"
@@ -68,7 +79,8 @@ const Header = () => {
         >
           (Sign Out)
         </button>
-      </div>}
+      </div>
+      )}
     </div>
   );
 };

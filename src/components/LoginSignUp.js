@@ -5,6 +5,7 @@ import { auth } from '../utils/firebase';
 import { addUser } from '../utils/userSlice';
 import { useDispatch } from 'react-redux';
 import Header from './Header';
+import { BG_IMG } from '../utils/constants';
 
 const LoginSignUp = () => {
 
@@ -18,7 +19,6 @@ const LoginSignUp = () => {
   
   const checkFormVlidation = () => {
     const message =checkValidData(email.current.value, password.current.value);
-    console.log(message);
     // console.log(email.current.value);
     // console.log(password.current.value);
     setErrorMessage(message);
@@ -58,7 +58,6 @@ const LoginSignUp = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode + " " + errorMessage);
       });
       } else {
         // sign in logic
@@ -82,11 +81,11 @@ const LoginSignUp = () => {
       <div className="absolute top-0 left-0 w-full h-full">
         <img
           alt="bg"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/04bef84d-51f6-401e-9b8e-4a521cbce3c5/null/IN-en-20240903-TRIFECTA-perspective_0d3aac9c-578f-4e3c-8aa8-bbf4a392269b_large.jpg"
+          src={BG_IMG}
           className="object-cover w-full h-full"
         />
       </div>
-      <div className="flex items-center justify-center h-full relative z-10 pb-52">
+      <div className="flex items-center justify-center h-full relative z-10">
         <form
         onSubmit={(e)=>e.preventDefault()} 
         className="bg-black bg-opacity-85 p-14 rounded-lg shadow-lg text-center w-96">
