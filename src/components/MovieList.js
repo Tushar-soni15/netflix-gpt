@@ -1,5 +1,6 @@
 import React from 'react'
 import MovieListCards from './MovieListCards';
+import { Link } from 'react-router-dom';
 
 const MovieList = ({title, movies}) => {
     if(movies === null) return;
@@ -9,8 +10,12 @@ const MovieList = ({title, movies}) => {
             <h1 className='text-3xl font-bold p-2'>{title}</h1>
             <div className='flex overflow-x-scroll no-scrollbar'>
                 <div className='flex'>
-                    {movies?.map(movie => <MovieListCards poster = {movie.poster_path}
-                    key = {movie.id}/>)}
+                        {movies?.map(movie => 
+                        <Link to={"/movie/"+movie.id}>
+                            <MovieListCards poster = {movie.poster_path}
+                            key = {movie.id}/>
+                        </Link>
+                        )}
                 </div>
             </div>
         </div>
