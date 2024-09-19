@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../utils/firebase';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
 import { NETFLIX_LOGO, PROFILE_LOGO } from '../utils/constants';
@@ -52,14 +52,29 @@ const Header = () => {
     dispatch(toggleSearchBtn());
   }
   return (
-    <div className="absolute bg-gradient-to-b from-black flex justify-between items-center w-full">
+    <div className="absolute bg-gradient-to-b from-black flex justify-between w-full">
       {/* Netflix Logo */}
       <div className="flex items-center mt-2">
+        <Link className=" z-20" to="/">
         <img
           alt="logo"
           src={NETFLIX_LOGO}
           className="h-24 z-20"
         />
+        </Link>
+        <div className='flex z-20 mt-1 ml-4'>
+        <ul className="flex space-x-6">
+          <li className='text-white'>
+            Contact Us
+          </li>
+          <li className='text-white'>
+            About Us
+          </li>
+          <li className='text-white'>
+            My List
+          </li>
+        </ul>
+      </div>
       </div>
       {/* Sign-out button and user icon */}
       {user && (

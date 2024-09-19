@@ -4,20 +4,19 @@ import { IMG_CDN } from '../utils/constants';
 
 const MovieInfo = () => {
     const movieInfo = useSelector((store) => store.movieInfo.movieDetail);
-    const credit = useSelector((store) => store.movieInfo.credit);
-    if(!movieInfo) return null;
-    if (!credit || !credit.cast) return null;
-    console.log(movieInfo);
     
-    const director = credit.cast.filter((c) => c.known_for_department === "Directing");
-    console.log(director[0]);
+    if(!movieInfo) return null;
+    
+    // console.log(movieInfo);
     return (
         <div>
             <div className='flex'>
+                <div className='m-4'>
                 <img 
-                className='w-80 h-auto m-6 px-4'
+                className='w-80 h-auto m-6 rounded-lg '
                 alt="bg_poster" 
                 src={IMG_CDN + movieInfo.poster_path}/>
+                </div>
                 <div>
                     <h1 className='text-4xl text-white font-bold mt-8'>{movieInfo.title}
                         <span className='text-3xl font-thin ml-2'>({new Date(movieInfo.release_date).getFullYear()})
@@ -48,12 +47,6 @@ const MovieInfo = () => {
                     <p className='text-md w-96 text-white mt-1'>
                         {movieInfo.overview}
                     </p>
-                    <h2 className='mt-10 text-white font-bold flex flex-col'>
-                        {/* {director[0].name} */}
-                        <span className='text-gray-50 font-thin'>
-                            {/* {director[0].known_for_department} */}
-                        </span>
-                    </h2>
                 </div>
             </div>
         </div>
