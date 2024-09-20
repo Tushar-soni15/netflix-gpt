@@ -65,13 +65,19 @@ const Header = () => {
         <div className='flex z-20 mt-1 ml-4'>
         <ul className="flex space-x-6">
           <li className='text-white'>
-            Contact Us
+            <Link to="/contact">
+              Contact
+            </Link>
           </li>
           <li className='text-white'>
-            About Us
+            <Link to="/about">
+              About
+            </Link>
           </li>
           <li className='text-white'>
+          <Link to="/mylist">
             My List
+            </Link>
           </li>
         </ul>
       </div>

@@ -6,6 +6,9 @@ import LoginSignUp from './components/LoginSignUp';
 import { Provider } from 'react-redux';
 import appStore from './utils/appStore';
 import MovieStream from './components/MovieStream';
+import About from './components/About';
+import Contact from './components/Contact';
+import MyList from './components/MyList';
 
 function App() {
 
@@ -21,6 +24,18 @@ function App() {
     {
       path: "/movie/:movie_id",
       element: <MovieStream />,
+    }, 
+    {
+      path: "/contact",
+      element: <Contact />,
+    }, 
+    {
+      path: "/about",
+      element: <About />,
+    }, 
+    {
+      path: "/mylist",
+      element: <MyList />,
     }
   ]);
 

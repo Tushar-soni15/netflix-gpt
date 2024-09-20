@@ -9,6 +9,7 @@ import useReviews from '../hooks/useReviews';
 import useSimilarMovies from '../hooks/useSimilarMovies';
 import { useSelector } from 'react-redux';
 import MovieList from './MovieList';
+import { Link } from 'react-router-dom';
 
 const MovieStream = () => {
   useMovieDetail(); 
@@ -18,16 +19,18 @@ const MovieStream = () => {
 
   const similarMovie = useSelector((store) => store.movieInfo.similarMovies);
   if(!similarMovie) return null;
-  console.log(similarMovie);
+  // console.log(similarMovie);
 
   return (
     <div className='bg-gradient-to-b from-black bg-gray-600 h-screen w-screen'>
       <div className="">
+        <Link to="/browse">
         <img
           alt="logo"
           src={NETFLIX_LOGO}
           className="h-24 z-20 pl-4"
         />
+        </Link>
         <div>
           <MovieInfo/>
         </div>
