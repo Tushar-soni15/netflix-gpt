@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IMG_CDN } from '../utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faList, faHeart, faBookmark, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faBookmark, faPlay } from '@fortawesome/free-solid-svg-icons';
 import useVideoTrailer from '../hooks/useVideoTrailerId';
+import { saveMovie, removeMovie } from '../utils/savedMovies';
 
 const MovieInfo = () => {
+    const dispatch = useDispatch();
+    
     const movieInfo = useSelector((store) => store.movieInfo.movieDetail);
+
+    const savedMovies = useSelector((store) => store.saved.savedMovies); // Get saved movies from Redux
+
     const trailerId = useSelector((store) => store.movie?.trailerInfo);
+
     const [showTrailer, setShowTrailer] = useState(false); // State to manage trailer modal visibility
+
     const [currentTrailerId, setCurrentTrailerId] = useState(null); // State for current trailer ID
 
     const movieId = movieInfo?.id;
@@ -25,6 +33,15 @@ const MovieInfo = () => {
     }, [trailerId, movieId]); // Dependency array includes movieId and trailerId
 
     if (!movieInfo) return null;
+
+    const isMovieSaved = savedMovies.some((movie) => movie.id === movieInfo.id);
+    const handleSaveMovie = () => {
+        if (isMovieSaved) {
+            dispatch(removeMovie(movieInfo.id)); // Remove from list if already saved
+        } else {
+            dispatch(saveMovie(movieInfo)); // Save to list if not already saved
+        }
+    };
 
     return (
         <div>
@@ -69,18 +86,19 @@ const MovieInfo = () => {
                         </p>
 
                         {/* Buttons Section */}
-                        <div className='flex mt-4 space-x-4'>
-                            <button className='flex items-center space-x-2 bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600'>
-                                <FontAwesomeIcon icon={faList} />
-                                <span>Create List</span>
-                            </button>
+                        <div className='flex mt-4 space-x-4 relative'>
                             <button className='flex items-center space-x-2 bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600'>
                                 <FontAwesomeIcon icon={faHeart} />
                                 <span>Like</span>
                             </button>
-                            <button className='flex items-center space-x-2 bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600'>
+                            <button
+                                className={`flex items-center space-x-2 py-2 px-4 rounded ${
+                                    isMovieSaved ? 'bg-blue-600' : 'bg-gray-700'
+                                } text-white hover:bg-gray-600`}
+                                onClick={handleSaveMovie}
+                            >
                                 <FontAwesomeIcon icon={faBookmark} />
-                                <span>Save</span>
+                                <span>{isMovieSaved ? 'Saved' : 'Save'}</span>
                             </button>
                             <button
                                 className='flex items-center space-x-2 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-500'
