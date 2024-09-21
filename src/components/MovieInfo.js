@@ -5,18 +5,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faBookmark, faPlay } from '@fortawesome/free-solid-svg-icons';
 import useVideoTrailer from '../hooks/useVideoTrailerId';
 import { saveMovie, removeMovie } from '../utils/savedMovies';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const MovieInfo = () => {
     const dispatch = useDispatch();
     
     const movieInfo = useSelector((store) => store.movieInfo.movieDetail);
-
     const savedMovies = useSelector((store) => store.saved.savedMovies); // Get saved movies from Redux
-
     const trailerId = useSelector((store) => store.movie?.trailerInfo);
 
     const [showTrailer, setShowTrailer] = useState(false); // State to manage trailer modal visibility
-
     const [currentTrailerId, setCurrentTrailerId] = useState(null); // State for current trailer ID
 
     const movieId = movieInfo?.id;
@@ -35,11 +35,14 @@ const MovieInfo = () => {
     if (!movieInfo) return null;
 
     const isMovieSaved = savedMovies.some((movie) => movie.id === movieInfo.id);
+
     const handleSaveMovie = () => {
         if (isMovieSaved) {
             dispatch(removeMovie(movieInfo.id)); // Remove from list if already saved
+            toast.info(`${movieInfo.title} removed from saved movies.`); // Show notification for removal
         } else {
             dispatch(saveMovie(movieInfo)); // Save to list if not already saved
+            toast.success(`${movieInfo.title} added to saved movies!`); // Show notification for saving
         }
     };
 
@@ -135,6 +138,9 @@ const MovieInfo = () => {
                     </div>
                 </div>
             )}
+
+            {/* Toast Container */}
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
         </div>
     );
 };

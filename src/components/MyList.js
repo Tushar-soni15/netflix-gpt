@@ -1,24 +1,38 @@
-// src/components/MyList.js
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { IMG_CDN } from '../utils/constants';
 import { Link } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const MyList = () => {
     const savedMovies = useSelector((store) => store.saved.savedMovies);
 
     if (savedMovies.length === 0) {
         return (
-            <div className="p-8 bg-black min-h-screen">
-                <h1 className="text-white text-3xl font-bold mb-4">My List</h1>
+            <div className="p-8 pt-16 bg-gray-700 bg-gradient-to-b from-black min-h-screen">
+                <Link 
+                    to="/browse"
+                    className="absolute top-5 left-5 text-white border border-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition duration-300 flex items-center"
+                >
+                    <FaArrowLeft className="mr-2" /> {/* Back Arrow */}
+                    Home
+                </Link>
+                <h1 className="text-white text-3xl font-bold mb-4 mt-16">My Watchist</h1> {/* Added mt-16 */}
                 <p className="text-white">Your list is empty.</p>
             </div>
         );
     }
 
     return (
-        <div className="p-8 bg-black min-h-screen">
-            <h1 className="text-white text-3xl font-bold mb-6">My List</h1>
+        <div className="p-8 pt-16 bg-gray-700 bg-gradient-to-b from-black min-h-screen">
+            <Link 
+                to="/browse"
+                className="absolute top-5 left-5 text-white border border-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition duration-300 flex items-center"
+            >
+                <FaArrowLeft className="mr-2" /> {/* Back Arrow */}
+                Home
+            </Link>
+            <h1 className="text-white text-3xl font-bold mb-6 mt-16">My Watchlist</h1> {/* Added mt-16 */}
 
             <div className="space-y-8">
                 {savedMovies.map((movie) => (

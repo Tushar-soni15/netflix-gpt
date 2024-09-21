@@ -9,6 +9,7 @@ import MovieStream from './components/MovieStream';
 import About from './components/About';
 import Contact from './components/Contact';
 import MyList from './components/MyList';
+import ProfilePage from './components/ProfilePage'
 
 function App() {
 
@@ -36,6 +37,10 @@ function App() {
     {
       path: "/mylist",
       element: <MyList />,
+    }, 
+    {
+      path: "/profile",
+      element: <ProfilePage />,
     }
   ]);
 
